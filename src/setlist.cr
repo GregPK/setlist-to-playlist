@@ -1,5 +1,6 @@
 require "./track"
 require "./result"
+require "./file_finder"
 
 # TODO: too many responsibilities, cut out: generation, file<>track comparison
 class S2pRb::Setlist
@@ -19,7 +20,7 @@ class S2pRb::Setlist
   def generate_playlist(base_path)
     results = [] of Result
     Dir.open(base_path) do
-      files = Dir.glob("**/*.{mp3,flac}")
+      files = FileFinder.new.files
       tracks.each do |track|
         candidates = [] of String
         files.each do |file|
