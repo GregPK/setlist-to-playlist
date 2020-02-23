@@ -19,5 +19,8 @@ targets:
 license: MIT
 
 dependencies:
+  clim:
+    github: at-grandpa/clim
+    version: 0.7.0
   pathname:
     github: arcage/crystal-pathname

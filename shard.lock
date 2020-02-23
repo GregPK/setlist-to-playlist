@@ -1,5 +1,9 @@
 version: 1.0
 shards:
+  clim:
+    github: at-grandpa/clim
+    version: 0.7.0
+
   pathname:
     github: arcage/crystal-pathname
     commit: f1ba55ecba256631d772f52ef628c8802955201e
