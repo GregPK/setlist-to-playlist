@@ -1,4 +1,5 @@
 require "./track"
+require "./result"
 
 # TODO: too many responsibilities, cut out: generation, file<>track comparison
 class S2pRb::Setlist
@@ -15,6 +16,7 @@ class S2pRb::Setlist
   end
 
   def generate_playlist(base_path)
+    results = [] of Result
     Dir.open(base_path) do
       files = Dir.glob("**/*.{mp3,flac}")
       tracks.each do |track|
@@ -25,14 +27,15 @@ class S2pRb::Setlist
           end
         end
         if candidates.empty?
+          results << Result.new(false, track, candidates, nil)
           handle_missing(track)
           next
         end
         chosen_file = determine_best_file(candidates)
-        track.file_path = chosen_file
+        results << Result.new(true, track, candidates, chosen_file)
       end
     end
-    tracks
+    results
   end
 
   def determine_best_file(candidates)

@@ -2,16 +2,12 @@ require "pathname"
 
 # TODO: make more of a value object
 class S2pRb::Track
-  property artist : String
-  property track_name : String
-  # TODO: remove, create a result object with Track as a value
-  property file_path : String
+  property source : String
+  property artist = ""
+  property track_name = ""
 
-  def initialize(line, default_artist)
-    @artist = ""
-    @track_name = ""
-    @file_path = ""
-    parse_line(line, default_artist)
+  def initialize(@source, default_artist)
+    parse_line(source, default_artist)
   end
 
   def matches_file?(filepath)
