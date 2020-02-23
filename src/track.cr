@@ -1,8 +1,10 @@
 require "pathname"
 
+# TODO: make more of a value object
 class S2pRb::Track
   property artist : String
   property track_name : String
+  # TODO: remove, create a result object with Track as a value
   property file_path : String
 
   def initialize(line, default_artist)

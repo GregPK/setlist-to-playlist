@@ -10,6 +10,7 @@ class SetlistToPlaylistCommand < Clim
     run do |opts, args|
       setlist = S2pRb::Setlist.new(STDIN.gets_to_end)
       playlist = setlist.generate_playlist(Dir.current)
+      # refactor into separate object
       STDOUT << playlist.map { |t| t.file_path }.join("\n")
       STDOUT << "\n"
     end
