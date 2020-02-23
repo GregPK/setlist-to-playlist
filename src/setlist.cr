@@ -5,8 +5,9 @@ require "./result"
 class S2pRb::Setlist
   property tracks : Array(Track)
   property default_artist : String
+  property fail_fast = false
 
-  def initialize(setlist_text)
+  def initialize(setlist_text, @fail_fast = false)
     @tracks = [] of Track
     @default_artist = Dir.current.split('/').last
     setlist_text.each_line do |line|
@@ -51,6 +52,6 @@ class S2pRb::Setlist
   end
 
   def handle_missing(track)
-    STDERR.puts "No track found for #{track.track_name}"
+    STDERR.puts "No track found for #{track.track_name}" unless fail_fast
   end
 end
