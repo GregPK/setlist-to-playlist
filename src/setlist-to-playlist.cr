@@ -14,8 +14,10 @@ class S2pRb::Track
 
   def matches_file?(filepath)
     filepath = Pathname.new(filepath)
-    # p [filepath.dirname.to_s, filepath.basename.to_s]
-    filepath.dirname.to_s.match(/#{artist}/i) && filepath.basename.to_s.match(/#{track_name}/i)
+    track_matched = filepath.basename.to_s.match(/#{track_name}/i)
+    # p [track_name, filepath.dirname.to_s, filepath.basename.to_s] if track_matched
+    return track_matched
+    # track_matched && filepath.dirname.to_s.match(/#{artist}/i)
   end
 
   def parse_line(line, default_artist)
@@ -36,7 +38,7 @@ class S2pRb::Setlist
 
   def initialize(setlist_text)
     @tracks = [] of Track
-    @default_artist = ""
+    @default_artist = Dir.current.split('/').last
     setlist_text.each_line do |line|
       add_track(line)
     end
@@ -52,6 +54,10 @@ class S2pRb::Setlist
           if track.matches_file?(file)
             candidates << file
           end
+        end
+        if candidates.empty?
+          handle_missing(track)
+          next
         end
         chosen_file = determine_best_file(candidates)
         track.file_path = chosen_file
@@ -70,6 +76,10 @@ class S2pRb::Setlist
   def add_track(track_line)
     track = Track.new(track_line, default_artist)
     self.tracks << track
+  end
+
+  def handle_missing(track)
+    STDERR.puts "No track found for #{track.track_name}"
   end
 end
 
