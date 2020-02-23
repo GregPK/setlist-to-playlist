@@ -3,7 +3,7 @@ require "./result"
 require "./file_finder"
 
 # TODO: too many responsibilities, cut out: generation, file<>track comparison
-class S2pRb::Setlist
+class SetlistToPlaylist::Setlist
   property tracks : Array(Track)
   property default_artist : String
   property fail_fast = false

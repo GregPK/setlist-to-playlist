@@ -1,7 +1,7 @@
 require "pathname"
 
 # TODO: make more of a value object
-class S2pRb::Track
+class SetlistToPlaylist::Track
   property source : String
   property artist = ""
   property track_name = ""

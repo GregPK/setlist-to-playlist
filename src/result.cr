@@ -1,7 +1,7 @@
 require "pathname"
 
 # TODO: make more of a value object
-class S2pRb::Result
+class SetlistToPlaylist::Result
   property success : Bool
   property query : Track
   property candidates : Array(String)

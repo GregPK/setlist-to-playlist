@@ -10,7 +10,7 @@ class SetlistToPlaylistCommand < Clim
     option "-r bool", "--resultinfo=true", type: Bool, desc: "Print all available debug info on result output to STDOUT.", default: false
     option "-f bool", "--failfast=false", type: Bool, desc: "Prints only missing tracks to STDERR", default: false
     run do |opts, args|
-      setlist = S2pRb::Setlist.new(STDIN.gets_to_end, fail_fast = opts.failfast)
+      setlist = SetlistToPlaylist::Setlist.new(STDIN.gets_to_end, fail_fast = opts.failfast)
       playlist = setlist.generate_playlist(Dir.current)
       # refactor into separate object
 

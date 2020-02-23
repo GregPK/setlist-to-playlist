@@ -1,6 +1,6 @@
 require "pathname"
 
-class S2pRb::FileFinder
+class SetlistToPlaylist::FileFinder
   property files : Array(String)
 
   def initialize(filter = ->{ true })
