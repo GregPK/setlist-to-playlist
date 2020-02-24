@@ -18,7 +18,7 @@ class SetlistToPlaylist::Setlist
     raise "No tracks found in setlist. [#{setlist_text}]" if tracks.nil? || tracks.empty?
   end
 
-  def generate_playlist(base_path)
+  def generate_playlist(base_path, absolute_paths = true)
     results = [] of Result
     Dir.open(base_path) do
       files = FileFinder.new.files
@@ -35,6 +35,7 @@ class SetlistToPlaylist::Setlist
           next
         end
         chosen_file = determine_best_file(candidates)
+        chosen_file = File.expand_path(chosen_file) if absolute_paths
         results << Result.new(true, track, candidates, chosen_file)
       end
     end
