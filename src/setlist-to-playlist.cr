@@ -2,30 +2,33 @@ require "pathname"
 
 require "clim"
 
-require "clim"
 require "./setlist"
+require "./generators/m3u"
+require "./generators/failed_list"
+require "./generators/result_debugger"
 
-class SetlistToPlaylistCommand < Clim
+# Generators = SetlistToPlaylist::Generators
+
+class SetlistToPlaylist::SetlistToPlaylistCommand < Clim
   main do
     option "-r bool", "--resultinfo=true", type: Bool, desc: "Print all available debug info on result output to STDOUT.", default: false
     option "-f bool", "--failfast=false", type: Bool, desc: "Prints only missing tracks to STDERR", default: false
     run do |opts, args|
       setlist = SetlistToPlaylist::Setlist.new(STDIN.gets_to_end, fail_fast = opts.failfast)
-      playlist = setlist.generate_playlist(Dir.current)
+      results = setlist.generate_playlist(Dir.current)
       # refactor into separate object
 
       if opts.resultinfo
-        STDOUT << playlist.map { |result| result.inspect }.join("\n")
+        STDOUT << Generators::ResultDebugger.new(results).generate
       end
       if opts.failfast
-        STDOUT << "No results found for:\n"
-        STDOUT << playlist.reject(&.successful?).map { |result| result.query.source }.join("\n")
+        STDOUT << Generators::FailedList.new(results).generate
       else
-        STDOUT << playlist.select(&.successful?).map { |result| result.result_data }.join("\n")
+        STDOUT << Generators::M3U.new(results).generate
       end
       STDOUT << "\n"
     end
   end
 end
 
-SetlistToPlaylistCommand.start(ARGV)
+SetlistToPlaylist::SetlistToPlaylistCommand.start(ARGV)

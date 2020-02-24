@@ -1,8 +1,9 @@
 require "./track"
 require "./result"
 require "./file_finder"
+require "./generators/m3u.cr"
 
-# TODO: too many responsibilities, cut out: generation, file<>track comparison
+# TODO: too many responsibilities, cut out: file<>track comparison
 class SetlistToPlaylist::Setlist
   property tracks : Array(Track)
   property default_artist : String
